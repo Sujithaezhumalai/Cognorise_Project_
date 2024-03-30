@@ -1,0 +1,54 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class HangmanGame {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+
+        String[] words = {"hangman", "computer", "java", "programming", "developer", "openai", "algorithm"};
+
+        String wordToGuess = words[random.nextInt(words.length)];
+        char[] wordDisplay = new char[wordToGuess.length()];
+
+        for (int i = 0; i < wordDisplay.length; i++) {
+            wordDisplay[i] = '_';
+        }
+
+        int incorrectGuesses = 0;
+        int maxIncorrectGuesses = 6;
+        boolean wordGuessed = false;
+
+        System.out.println("Welcome to Hangman!");
+        
+        while (incorrectGuesses < maxIncorrectGuesses && !wordGuessed) {
+            System.out.println("Word: " + String.valueOf(wordDisplay));
+            System.out.print("Enter a letter: ");
+            char guess = scanner.next().charAt(0);
+
+            boolean letterFound = false;
+            for (int i = 0; i < wordToGuess.length(); i++) {
+                if (wordToGuess.charAt(i) == guess) {
+                    wordDisplay[i] = guess;
+                    letterFound = true;
+                }
+            }
+
+            if (!letterFound) {
+                incorrectGuesses++;
+                System.out.println("Incorrect guess! You have " + (maxIncorrectGuesses - incorrectGuesses) + " guesses left.");
+            }
+
+            if (String.valueOf(wordDisplay).equals(wordToGuess)) {
+                wordGuessed = true;
+                System.out.println("Congratulations! You guessed the word: " + wordToGuess);
+            }
+        }
+
+        if (incorrectGuesses >= maxIncorrectGuesses) {
+            System.out.println("Sorry, you ran out of guesses. The word was: " + wordToGuess);
+        }
+
+        scanner.close();
+    }
+}
